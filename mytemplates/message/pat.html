@@ -1,0 +1,16 @@
+{% if user %}
+{{ user }}
+ 
+	<h1> Welcome {{ user.first_name }}</h1>
+	<ul>
+
+		<li><a href="/sam/{{ user.username }}/logs/">View Logs</a></li><br />
+		Send  a Message to the patient or the parent.
+		<li><a href="/sam/{{ user.username }}/notes/">notes</a></li><br />
+		Submit notes.
+	</ul>
+	
+<form action="/sam/logout1/" method="post">
+	<input type="submit" value="Logout" />
+
+{% endif %}
