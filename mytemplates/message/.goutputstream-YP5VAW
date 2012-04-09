@@ -1,0 +1,8 @@
+{% if user %}
+<h1>DETAILS</h1>
+<pre>
+First Name	Last Name	
+
+{{ user.first_name }}		{{ user.last_name }} 
+</pre>
+{% endif %}
