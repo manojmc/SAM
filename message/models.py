@@ -38,6 +38,7 @@ class notes_table(models.Model):
 	note = models.CharField(max_length=160)
 	def __unicode__(self):
 		return self.note
+<<<<<<< HEAD
 
 class relation_table(models.Model):
 	parent_id = models.CharField(max_length=10)
@@ -65,6 +66,9 @@ class log(models.Model):
 		return "%s %s (%s)" % (self.username, self.med_id, self.timestamp)
 	class Meta:
 		ordering = ['timestamp']
+=======
+	
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 
 		
 # Create your models here.

@@ -8,6 +8,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+<<<<<<< HEAD
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
@@ -20,6 +21,19 @@ DATABASES = {
     }
 
 
+=======
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'phpdatabase',                      # Or path to database file if using sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
+        'PASSWORD': 'root',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -34,12 +48,15 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+<<<<<<< HEAD
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'manojmc'
 EMAIL_HOST_PASSWORD = 'Cheguevara1989'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+=======
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -63,7 +80,11 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
+<<<<<<< HEAD
 STATIC_ROOT = '/home/manoj/1/sam/static/'
+=======
+STATIC_ROOT = '/home/manoj/sam/message/static/'
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -76,8 +97,11 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+<<<<<<< HEAD
     "",
     
+=======
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     
@@ -115,7 +139,11 @@ AUTH_PROFILE_MODULE = 'login.UserProfile'
 ROOT_URLCONF = 'sam.urls'
 
 TEMPLATE_DIRS = (
+<<<<<<< HEAD
 	'/home/manoj/1/sam/mytemplates/',
+=======
+	'/home/manoj/sam/mytemplates/',
+>>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
