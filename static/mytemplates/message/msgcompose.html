@@ -1,0 +1,14 @@
+<h1>Who do you wanna Message Dr. {{ user }}??</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if sent_ack %}<p><strong>{{ sent_ack }}</strong></p>{% endif %}
+{% if rec_error %}<p><strong>{{ rec_error }}</strong></p>{% endif %}
+<form action="/sam/{{ user }}/msg/" method="post">{% csrf_token %}
+
+	<input type="hidden" name="from" value= "{{ user }}" >
+	To: <input type="text" name="to"><br />	
+	<textarea rows="10" cols="80" name="message"></textarea><br />
+	<input type="submit" value="Send">
+</form>
+
+

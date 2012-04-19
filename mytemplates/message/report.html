@@ -1,0 +1,52 @@
+<html>
+<head>
+<h1>{{ user.first_name }} Report</h1>
+ 
+    </head>
+    <body>
+    <img src="http://chart.apis.google.com/chart?chxl=0:|Monday|Tuesday|Wednesday+|Thursday|Friday|Saturday|Sunday&chxs=0,000000,11.5,0,l,676767&chxt=x&chbh=a&chs=560x345&cht=bvg&chco=3366CC,DC3912,FF9900&chds=0,95,0,80,0,70&chd=t:{{m1}},{{m2}},{{m3}},{{m4}},{{m5}},{{m6}},{{m7}}|{{r1}},{{r2}},{{r3}},{{r4}},{{r5}},{{r6}},{{r7}}|{{s1}},{{s2}},{{s3}},{{s4}},{{s5}},{{s6}},{{s7}}&chdl=Controller|Reliever|Symptoms&chtt=Summary"width="700" height="525" alt="Summary" /><br />
+<h4>Logs</h4>
+{%if log_list%}
+<table >
+    <tr>
+      <th width="100">USERNAME</th>
+      <th width="100">MEDICINE</th>
+      <th width="300">TIME STAMP</th>
+    </tr>
+{% for log in log_list %}
+    <tr>
+      <td>{{ log.username }}</td>
+      <td>{{ log.med_id }}</td>
+      <td>{{ log.timestamp }}</td>
+    </tr>
+{% endfor %}
+</table>
+{%else%}
+No Logs for the selected Week.
+{%endif%}
+<br />
+<h4>Note</h4>
+    {% if note_list %}
+    {{ u.first_name }}
+<table>
+    <tr>
+      <th width="100">From</th>
+      <th width="100">To</th>
+      <th width="300">Note</th>
+      </tr>
+      {% for note in note_list %}
+      <tr>
+        <td>{{ start_week }}</td>
+        <td>{{end_week}}</td>
+        <td>{{note}}</td>
+      </tr>
+        {% endfor %}
+</table>
+    
+    {% else %}
+    No Notes for the selected week
+    {% endif %}
+
+
+</body>
+</html>

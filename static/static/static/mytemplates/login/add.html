@@ -1,0 +1,14 @@
+<h1>Add User</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="/sam/add/" method="post">
+{% csrf_token %}
+
+    Type <input type="text" name="username"/><br />
+    
+    <br />
+
+<input type="submit" value="add" />
+</form>
+
