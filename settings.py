@@ -63,7 +63,7 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = '/home/manoj/1/sam/static/'
+STATIC_ROOT = '/home/ubuntu/SAM/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -115,7 +115,7 @@ AUTH_PROFILE_MODULE = 'login.UserProfile'
 ROOT_URLCONF = 'sam.urls'
 
 TEMPLATE_DIRS = (
-	'/home/manoj/1/sam/mytemplates/',
+	'/home/ubuntu/SAM/mytemplates/',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

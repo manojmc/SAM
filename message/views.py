@@ -1,5 +1,5 @@
 	# Create your views here.
-from message.models import user_table, message_table, log_table, notes_table, relation_table, LogTable
+from message.models import user_table, message_table, log_table, UploadFileForm, notes_table, relation_table, LogTable
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
@@ -14,17 +14,14 @@ from django.contrib.auth.decorators import login_required
 from login.models import UserProfile
 import datetime
 from random import randint
-from GChartWrapper import *
+#from GChartWrapper import *
 from django.utils import simplejson
 from django.core.mail import send_mail,EmailMultiAlternatives
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.template.loader import get_template
 from django.template import Context
-# import load_data
-#from numarray import *
 csv_filepathname="/home/manoj/test"
-# Full path to your django project directory
 your_djangoproject_home="/home/manoj/1/sam/"
 
 import sys,os
@@ -33,16 +30,40 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from message.models import LogTable
 import csv
 
+
+@csrf_exempt
 def upload_data(request, user):
+	path = request.FILES['path']
+	print path
+	print "--------------------"
 	u = User.objects.get(username=user)
 	t = UserProfile.objects.get(user = u.id)
-	dataReader = csv.reader(open(csv_filepathname), delimiter=',', quotechar='"')
+	handle_uploaded_file(path, user)
+	
+	success_msg = "Data Uploaded Successfully!!"
+	u=get_object_or_404(User, username=user)
+	
+	t = UserProfile.objects.get(user=u.id)
+	date = datetime.date.today()
+	start_week = date - datetime.timedelta(date.weekday())
+	end_week = start_week + datetime.timedelta(7)
+		
+	l_list = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week]).order_by('timestamp')
+	
+	return render_to_response('message/log.html', {'log_list': l_list, 'success_msg': success_msg,
+	'user': u,
+	'type': t})
+
+
+def handle_uploaded_file(f, user):
+	destination = open('/home/manoj/name.txt', 'wb+')
 	i = 0
-	for row in dataReader:
-		print row
+	for line in f:
+		print line
+		print "'''''"
 		log = LogTable()
-		if i == 0: 
-			med_id = row[0]
+		if i == 0:
+			med_id = line[:-1]
 			if med_id == '111':
 				med_id = 'Controller1'
 			elif med_id == '222':
@@ -57,27 +78,27 @@ def upload_data(request, user):
 				med_id = 'Symptom3'
 			i+=1
 		elif i == 1:
-			year = row[0]
+			year = line[:-1]
 			if len(year) == 2:
 				year = '20'+year
 			i+=1
 		elif i == 2:
-			month = row[0]
+			month = line[:-1]
 			if len(month) == 1:
 				month = '0'+month
 			i+=1
 		elif i == 3:
-			day = row[0]
+			day = line[:-1]
 			if len(day) == 1:
 				day = '0'+day
 			i+=1
 		elif i == 4:
-			hour = row[0]
+			hour = line[:-1]
 			if len(hour) == 1:
 				hour = '0'+hour
 			i+=1
 		elif i == 5:
-			mins = row[0]
+			mins = line[:-1]
 			if len(mins) == 1:
 				mins = '0'+mins
 			
@@ -85,32 +106,19 @@ def upload_data(request, user):
 			secs = str(secs)
 			if len(secs) == 1:
 				secs = '0'+secs
-		
 			timestamp = year+'-'+month+'-'+day+" "+hour+':'+mins+":"+secs
 			print timestamp
-			entry = 'username:'+u.username+" "+'med_id:'+med_id+" "+'timestamp:'+timestamp
-			print entry
-			log.username = u.username
+			print "****"
+			entry = 'username:'+user+" "+'med_id:'+med_id+" "+'timestamp:'+timestamp
+			log.username = user
 			log.med_id = med_id
 			log.timestamp = timestamp
 			log.save()
 			i = 0
 	
-	#print Log
-	success_msg = "Data Uploaded Successfully!!"
-	u=get_object_or_404(User, username=user)
 	
-	t = UserProfile.objects.get(user=u.id)
-	date = datetime.date.today()
-	start_week = date - datetime.timedelta(date.weekday())
-	end_week = start_week + datetime.timedelta(7)
-		
-	l_list = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week]).order_by('timestamp')
 	
-	return render_to_response('message/log.html', {'log_list': l_list, 'success_msg': success_msg,
-	'user': u,
-	'type': t})
-	
+			
 @csrf_exempt
 def signup(request):
 	reg_suc = "Registered Successfully!!"

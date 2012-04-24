@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django import forms
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file  = forms.FileField()
 
 class user_table(models.Model):
 	username=models.CharField(max_length=10)
