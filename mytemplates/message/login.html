@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -223,20 +223,3 @@ function(errors, events) {
 </script>
   </body>
 </html>
-
-=======
-<h1>SAM LOGIN</h1>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<form action="/sam/login/" method="post">
-{% csrf_token %}
-
-    UserName: <input type="text" name="username"/><br />
-    Password: <input type="password" name="password"/>
-    <br />
-
-<input type="submit" value="Login" />
-
-</form>
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9

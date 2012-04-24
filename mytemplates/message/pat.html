@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -174,23 +173,3 @@
   </body>
 </html>
  
-	
-
-=======
-{% if user %}
-{{ user }}
- 
-	<h1> Welcome {{ user.first_name }}</h1>
-	<ul>
-
-		<li><a href="/sam/{{ user.username }}/logs/">View Logs</a></li><br />
-		Send  a Message to the patient or the parent.
-		<li><a href="/sam/{{ user.username }}/notes/">notes</a></li><br />
-		Submit notes.
-	</ul>
-	
-<form action="/sam/logout1/" method="post">
-	<input type="submit" value="Logout" />
-
-{% endif %}
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9

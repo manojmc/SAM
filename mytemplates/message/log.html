@@ -4,11 +4,8 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<<<<<<< HEAD
+
 <title>Smart Asthma Monitor</title>
-=======
-<title>jsDatePick Javascript example</title>
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 <!-- 
 
 	Copyright 2009 Itamar Arjuan
@@ -18,8 +15,6 @@
 
 	Copy paste these 2 lines of code to every page you want the calendar to be available at
 -->
-<<<<<<< HEAD
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -122,25 +117,14 @@
 <script type="text/javascript" src="/static/js/jsDatePick.min.1.3.js"></script>
 <!-- 
   After you copied those 2 lines of code , make sure you take also the files into the same folder :-)
-=======
-<link rel="stylesheet" type="text/css" media="all" href="/static/jsDatePick_ltr.min.css" />
-<!-- 
-	OR if you want to use the calendar in a right-to-left website
-	just use the other CSS file instead and don't forget to switch g_jsDatePickDirectionality variable to "rtl"!
-	
-	<link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.css" />
--->
-<script type="text/javascript" src="/static/jsDatePick.min.1.3.js"></script>
-<!-- 
-	After you copied those 2 lines of code , make sure you take also the files into the same folder :-)
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
+
     Next step will be to set the appropriate statement to "start-up" the calendar on the needed HTML element.
     
     The first example of Javascript snippet is for the most basic use , as a popup calendar
     for a text field input.
 -->
 <script type="text/javascript">
-<<<<<<< HEAD
+
   window.onload = function(){
     global_obj = new JsDatePick({
       useMode:2,
@@ -219,76 +203,12 @@ Patient Name
       <td>{{ log.timestamp }}</td>
     </tr>
   </tbody>
-=======
-	window.onload = function(){
-		global_obj = new JsDatePick({
-			useMode:2,
-			target:"cal1",
-			dateFormat:"%Y-%m-%d"
-			/*selectedDate:{				This is an example of what the full configuration offers.
-				day:5,						For full documentation about these settings please see the full version of the code.
-				month:9,
-				year:2006
-			},
-			yearsRange:[1978,2020],
-			limitToToday:false,
-			cellColorScheme:"beige",
-			dateFormat:"%Y-%m-%d",
-			imgPath:"img/",
-			weekStartDay:1 */
-		});
-		global_obj1 = new JsDatePick({
-			useMode:2,
-			target:"cal2",
-			dateFormat:"%Y-%m-%d"
-			/*selectedDate:{				This is an example of what the full configuration offers.
-				day:5,						For full documentation about these settings please see the full version of the code.
-				month:9,
-				year:2006
-			},
-			yearsRange:[1978,2020],
-			limitToToday:false,
-			cellColorScheme:"beige",
-			dateFormat:"%m-%d-%Y",
-			imgPath:"img/",
-			weekStartDay:1*/
-		});
-	};
-	
-</script>
-</head>
-<body>
-	    
-	  
 
-<h1>DETAILS</h1>
-
-<pre>
-First name	Last Name
-{{ user.first_name }}		{{ user.last_name }}
-</pre>
-
-</body>
-</html>
-
-<form action="/sam/{{ user.username }}/datelogs/" method="post">
-	<input type="text" id="cal1" name="from_date">
-	<input type="text" id="cal2" name="to_date">
-	<input type="submit" value="date" /><br />
-	
-
-{% if log_list %}
-<table>
-<tr><td width="100">username</td><td width="100">medicine</td><td width="300">time stamp</td></tr>
-{% for log in log_list %}
-<tr><td>{{ log.uid }}</td><td>{{ log.med_id }}</td><td>{{ log.timestamp }}</td></tr>
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
 {% endfor %}
 </table>
 {% else %}
 no data available for the selected range.
 {% endif %}
-<<<<<<< HEAD
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <!--<div class="hero-unit">
@@ -330,5 +250,3 @@ no data available for the selected range.
 
   </body>
 </html>
-=======
->>>>>>> c6f766ec206fa295a6dfca213cfb53e641f0a5f9
