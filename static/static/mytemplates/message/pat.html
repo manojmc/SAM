@@ -76,7 +76,22 @@
         </div>
       </div>
     </div>
-
+	<div class="modal fade" id="myModal">
+		  <div class="modal-header" bgcolor="blue">
+		    <a class="close" data-dismiss="modal">×</a>
+		    <h3>Choose a File</h3>
+		  </div>
+		  <div class="modal-body" >
+		  <form enctype="multipart/form-data" action="/sam/{{ user }}/upload/" method="post">
+		    File: <input type="file" name="path"/><br />
+					
+		  </div>
+		  <div class="modal-footer">
+		   <!-- <div class="btn btn-primary" type="submit" name="submit"> Login-->
+		   <input class = "btn btn-primary" name="submit" type="submit" value="Upload" />
+		    </div>
+		  </div>
+		</div>
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
@@ -87,7 +102,7 @@
               {% if type.type == 1 %}
                <li class="active"><a href="/sam/{{ user }}/patient/">Home</a></li>
               <li><a href="/sam/{{ user }}/logs/">View Logs</a></li>
-              <li><a href="/sam/{{ user }}/upload/">upload data</a></li>
+              <li><a data-toggle="modal" href="#myModal">upload data</a></li>
               <li><a href="/sam/{{ user }}/report/">Generate Report</a></li>
               <li><a href="/sam/{{ user }}/notes/">notes</a></li>
               {% else %}
@@ -111,11 +126,21 @@
               
 {% if type.type == 1 %} 
               <pre>
-     
-<h4>First Name 			Last Name 				E-mail 																				 Last Login</h4>
-{{ user.first_name }}   	{{ user.last_name }}		{{ user.email}}		{{ user.last_login }}
-				
-				</pre>
+<table cellpadding="10">
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>E-mail</th>
+<th>Last Login</th>    
+</tr>
+<tr>
+<td>{{ user.first_name }}</td>
+<td>{{ user.last_name }}</td>     
+<td>{{ user.email}}</td>
+<td>{{ user.last_login }}</td>
+</tr>
+</table>				
+</pre>
 {%if success_msg%}
 <h4>{{success_msg}}</h4>
 {%endif%}
@@ -163,5 +188,3 @@
   </body>
 </html>
  
-	
-

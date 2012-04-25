@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django import forms
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file  = forms.FileField()
 
 class user_table(models.Model):
 	username=models.CharField(max_length=10)
@@ -45,16 +50,25 @@ class relation_table(models.Model):
 	def __unicode__(self):
 		return self.parent_id
 		
-class ZipCode(models.Model):
-	zipcode = models.CharField(max_length=5)
-	city = models.CharField(max_length=64)
-	statecode = models.CharField(max_length=2)
+class LogTable(models.Model):
+    username = models.CharField(max_length=20)
+    med_id = models.CharField(max_length=64)
+    timestamp = models.DateTimeField()
+    
+    def __unicode__(self):
+        return "%s, %s (%s)" % (self.username, self.med_id, self.timestamp) 
 
-	def __unicode__(self):
-		return "%s %s (%s)" % (self.city, self.statecode, self.zipcode)
-		class Meta:
-			ordering = ['zipcode']
+    class Meta:
+        ordering = ['timestamp']
+
+class log(models.Model):
+	username = models.CharField(max_length=50)
+	med_id = 	models.CharField(max_length=2)
+	timestamp = models.DateTimeField()
 	
+	def __unicode__(self):
+		return "%s %s (%s)" % (self.username, self.med_id, self.timestamp)
+	class Meta:
+		ordering = ['timestamp']
 
-		
 # Create your models here.

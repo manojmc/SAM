@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,30 +32,8 @@
     <script src="/static/js/bootstrap-collapse.js"></script>
     <script src="/static/js/bootstrap-carousel.js"></script>
     <script src="/static/js/bootstrap-typeahead.js"></script>
-    <script language="javascript">
-<!--
-function check() {
-if (document.sign_up.username.value=="") {
-alert("You did not fill out your username.");
-}
-if (document.sign_up.first_name.value=="") {
-alert("You did not fill out your First Name.");
-}
-if (document.sign_up.last_name.value=="") {
-alert("You did not fill out your Last Name.");
-} 
-if (document.sign_up.password.value=="") {
-alert("You did not fill out your Password.");
-}
-if (document.sign_up.email.value=="") {
-alert("You did not fill out your email")
-} else {
-location.href="login.html";
-}
-}
--->
-</script>
-
+    <script type="text/javascript" src="validate.min.js"></script>
+    
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -154,36 +133,42 @@ location.href="login.html";
         <h3>Register</h3>
       </div>
       <div class="modal-body" >
-        <form padding-top="50px" class ="form-horizontal" name="sign_up" action="/sam/signup/" method="post" onClick="call()">
+        <form padding-top="50px" class ="form-horizontal" name="sign_up" action="/sam/signup/" method="post">
           <fieldset>
             <div class = "control-group">
-              <label class="control-label" for="username">UserName:</label>
+              <label class="control-label" for="username">UserName</label>
               <div class = "controls">
                 <input align="right" type="text" name="pat_username"  id="username"/>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="firstname">First Name:</label>
+              <label class="control-label" for="firstname">First Name</label>
               <div class = "controls">
                <input align="right" type="text" name="pat_first_name" id="firstname"/>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="lastname">Last Name:</label>
+              <label class="control-label" for="lastname">Last Name</label>
               <div class = "controls">
                 <input align="right" type="text" name="pat_last_name" id="lastname" />
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="email">E-mail:</label>
+              <label class="control-label" for="email">E-mail</label>
               <div class="controls">
                 <input align="right" type="text" name="pat_email" placeholder="Email" id="email"/>
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="password">Password:</label>
+              <label class="control-label" for="password">Password</label>
               <div class="controls">
                 <input align="right" type="text" name="pat_password" placeholder="Password" id="password"/>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="confirm_password">Confirm Password</label>
+              <div class ="controls">
+                <input type="text" name="confirm_password" placeholder="Confirm Password" id="confirm_password" />
               </div>
             </div>
           </fieldset>
@@ -198,11 +183,43 @@ location.href="login.html";
       <hr>
 
       <footer>
-        <p align="center">&copy; Company 2012</p>
+        <p align="center">&copy; SAM 2012</p>
       </footer>
 
     </div> <!-- /container -->
+<script type="text/javascript">
+var validator = new FormValidator('sign_up', [{
+    name: 'pat_username',
+    display: 'UserName',    
+    rules: 'required'
+}, {
+    name: 'pat_first_name',
+    display: 'First Name'
+    rules: 'required'
+}, {
+    name: 'pat_last_name',
+    display: 'Last Name'
+    rules: 'required'
+}, {
+    name: 'pat_email',
+    display: 'E-mail',
+    rules: 'required'
+}, {
+    name: 'pat_password',
+    display: 'Password'
+    rules: 'required'
+}, {
+    name: 'confirm_password',
+    display: 'Password Confirmation',
+    rules: 'required|matches[password]'
+}]
+}); 
+function(errors, events) {
+    if (errors.length > 0) {
+        el.innerHTML = errors.join('<br />');
+    }       
+}  
 
+</script>
   </body>
 </html>
-

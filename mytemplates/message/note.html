@@ -150,14 +150,15 @@
 		<form action="/sam/{{ user }}/note_process/" method="post">
 			
 			<input type="hidden" name="flag" value= "set" />
-      <input type="text" id="cal1" name="from_date" />
+      Pick a week:
+      <input type="text" id="cal1" name="from_date" readonly="readonly" />
 			<input class="btn btn-inverse" type="submit" value="Fetch" /><br />
 		</form>	<br />
 
 
 		<form action="/sam/{{ user }}/note_process/" method="post" >
 		<input type="hidden" name="flag" value= "unset" />
-		Date:<br /><input type="text" id="cal2" name = "from_date" /><br />
+		Date:<br /><input type="text" id="cal2" name = "from_date" readonly="readonly"/><br />
 		Note:<br /><textarea rows="10" cols="80" name="u_note" /></textarea><br />
 		<input class="btn btn-inverse" type="submit" value="submit note" /> 
 		</form>

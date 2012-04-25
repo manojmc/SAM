@@ -1,5 +1,5 @@
 	# Create your views here.
-from message.models import user_table, message_table, log_table, notes_table, relation_table, LogTable
+from message.models import user_table, message_table, log_table, UploadFileForm, notes_table, relation_table, LogTable
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import Http404
@@ -14,92 +14,111 @@ from django.contrib.auth.decorators import login_required
 from login.models import UserProfile
 import datetime
 from random import randint
-from GChartWrapper import *
+#from GChartWrapper import *
 from django.utils import simplejson
 from django.core.mail import send_mail,EmailMultiAlternatives
 from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.template.loader import get_template
 from django.template import Context
-# import load_data
-#from numarray import *
-csv_filepathname="/home/manoj/test"
-# Full path to your django project directory
-your_djangoproject_home="/home/manoj/1/sam/"
+#csv_filepathname="/home/manoj/test"
+#your_djangoproject_home="/home/manoj/1/sam/"
 
 import sys,os
-sys.path.append(your_djangoproject_home)
+#sys.path.append(your_djangoproject_home)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from message.models import LogTable
 import csv
 
+
+@csrf_exempt
 def upload_data(request, user):
+	path = request.FILES['path']
+	print path
+	print "--------------------"
 	u = User.objects.get(username=user)
 	t = UserProfile.objects.get(user = u.id)
-	dataReader = csv.reader(open(csv_filepathname), delimiter=',', quotechar='"')
+	handle_uploaded_file(path, user)
+	
+	success_msg = "Data Uploaded Successfully!!"
+	u=get_object_or_404(User, username=user)
+	
+	t = UserProfile.objects.get(user=u.id)
+	date = datetime.date.today()
+	start_week = date - datetime.timedelta(date.weekday())
+	end_week = start_week + datetime.timedelta(7)
+		
+	l_list = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week]).order_by('timestamp')
+	
+	return render_to_response('message/log.html', {'log_list': l_list, 'success_msg': success_msg,
+	'user': u,
+	'type': t})
+
+
+def handle_uploaded_file(f, user):
+	destination = open('/home/manoj/name.txt', 'wb+')
 	i = 0
-	for row in dataReader:
-		print row
+	for line in f:
+		print line
+		print "'''''"
 		log = LogTable()
-		if i == 0: 
-			med_id = row[0]
+		if i == 0:
+			med_id = line[:-1]
 			if med_id == '111':
-				med_id = 'm1'
+				med_id = 'Controller1'
 			elif med_id == '222':
-				med_id = 'm2'
+				med_id = 'Controller2'
 			elif med_id == '333':
-				med_id = 'm3'
+				med_id = 'Reliever'
 			elif med_id == '444':
-				med_id = 's1'
+				med_id = 'Symptom1'
 			elif med_id == '555':
-				med_id = 's2'
+				med_id = 'Symptom2'
 			elif med_id == '666':
-				med_id = 's3'
+				med_id = 'Symptom3'
 			i+=1
 		elif i == 1:
-			year = row[0]
+			year = line[:-1]
 			if len(year) == 2:
 				year = '20'+year
 			i+=1
 		elif i == 2:
-			month = row[0]
+			month = line[:-1]
 			if len(month) == 1:
 				month = '0'+month
 			i+=1
 		elif i == 3:
-			day = row[0]
+			day = line[:-1]
 			if len(day) == 1:
 				day = '0'+day
 			i+=1
 		elif i == 4:
-			hour = row[0]
+			hour = line[:-1]
 			if len(hour) == 1:
 				hour = '0'+hour
 			i+=1
 		elif i == 5:
-			mins = row[0]
+			mins = line[:-1]
 			if len(mins) == 1:
 				mins = '0'+mins
 			
-			secs = randint(0,60)
+			secs = randint(0,50)
 			secs = str(secs)
 			if len(secs) == 1:
 				secs = '0'+secs
-		
 			timestamp = year+'-'+month+'-'+day+" "+hour+':'+mins+":"+secs
 			print timestamp
-			entry = 'username:'+u.username+" "+'med_id:'+med_id+" "+'timestamp:'+timestamp
-			print entry
-			log.username = u.username
+			print "****"
+			entry = 'username:'+user+" "+'med_id:'+med_id+" "+'timestamp:'+timestamp
+			log.username = user
 			log.med_id = med_id
 			log.timestamp = timestamp
 			log.save()
 			i = 0
-	#print Log
-	success_msg = "Data Upload Successfull!!"
-	return render_to_response('message/pat.html', {'user': u, "type": t, 'success_msg': success_msg
-				}, context_instance=RequestContext(request))
-
+	
+	
+	
+			
 @csrf_exempt
 def signup(request):
 	reg_suc = "Registered Successfully!!"
@@ -198,11 +217,9 @@ def note(request, user):
 		start_week = date - datetime.timedelta(date.weekday())
 		end_week = start_week + datetime.timedelta(6)
 		l_note = notes_table.objects.filter(uid=u.id, start_week__range=[start_week, end_week]).order_by('start_week')
-		return render_to_response("message/note.html", {'user': u, 'note_list': l_note, 'type': t,
-		'start_week': start_week, 
+		return render_to_response("message/note.html", {'user': u, 'note_list': l_note, 'type': t,'start_week': start_week, 
 		'end_week': end_week
 		}, context_instance=RequestContext(request))
-
 	else:
 		rel_obj = relation_table.objects.get(parent_id = user)
 		patient = User.objects.get(username = rel_obj.patient_id)
@@ -263,7 +280,6 @@ def note_process(request, user):
 			'end_week': end_week
 			}, context_instance=RequestContext(request))
 
-		
 def msgcompose(request, user):
 	return render_to_response("message/msgcompose.html", {
 		'user': user,
@@ -274,6 +290,7 @@ def log(request, user):
 	
 	u=get_object_or_404(User, username=user)
 	
+
 	t = UserProfile.objects.get(user=u.id)
 	date = datetime.date.today()
 	start_week = date - datetime.timedelta(date.weekday())
@@ -291,18 +308,20 @@ def log(request, user):
 
 		rel_obj = relation_table.objects.get(parent_id = user)
 		patient = User.objects.get(username = rel_obj.patient_id)
-		l_list = log_table.objects.filter(uid=patient.id, timestamp__range=[start_week, end_week]).order_by('timestamp')
+		l_list = LogTable.objects.filter(username=patient.username, timestamp__range=[start_week, end_week]).order_by('timestamp')
 		return render_to_response('message/log.html', {'log_list': l_list, 
 		'user': u,
 		'patient': patient,
 		'type': t})
+
 
 @csrf_exempt	
 def date_log(request, user):
 	
 	u=get_object_or_404(User, username=user)
 	start_week = request.POST['from_date']
-	end_week = request.POST['to_date']
+	end_week = datetime.datetime.strptime(request.POST['to_date'], '%Y-%m-%d').date()
+	end_week = end_week + datetime.timedelta(1)
 	t = UserProfile.objects.get(user=u.id)
 
  	
@@ -317,7 +336,7 @@ def date_log(request, user):
 	else:
 		rel_obj = relation_table.objects.get(parent_id = user)
 		patient = User.objects.get(username = rel_obj.patient_id)
-		l_list = log_table.objects.filter(uid=patient.id, timestamp__range=[start_week, end_week]).order_by('timestamp')
+		l_list = LogTable.objects.filter(uid=patient.id, timestamp__range=[start_week, end_week]).order_by('timestamp')
 		return render_to_response('message/log.html', {'log_list': l_list, 
 		'user': u,
 		'patient': patient,
@@ -337,21 +356,23 @@ def char(request, user):
 		user_date = datetime.datetime.strptime(u_date, '%Y-%m-%d').date()
 		start_week = user_date - datetime.timedelta(user_date.weekday())
 		
+		count_reliever = [0 for i in range(8)]
 		count_medicine = [0 for i in range(8)]
 		count_symptom = [0 for i in range(8)]
 		for x in range(1,8):
 			end_week = start_week + datetime.timedelta(x)
 			
 			
-			data4 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'm1').count()
-			data5 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'm2').count()
-			data6 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'm3').count()
+			data4 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Controller1').count()
+			data5 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Controller2').count()
+			data6 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Reliever').count()
 			
-			count_medicine[x] = data4 + data5 + data6
+			count_medicine[x] = data4 + data5 
+			count_reliever[x] = data6
 			
-			sym1 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 's1').count()
-			sym2 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 's2').count()
-			sym3 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 's3').count()
+			sym1 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Symptom1').count()
+			sym2 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Symptom2').count()
+			sym3 = LogTable.objects.filter(username=u.username, timestamp__range=[start_week, end_week], med_id = 'Symptom3').count()
 			count_symptom[x] = sym1 + sym2 + sym3
 
 		m1 = count_medicine[1]
@@ -362,6 +383,14 @@ def char(request, user):
 		m6 = count_medicine[6]
 		m7 = count_medicine[7]
 		
+		r1 = count_reliever[1]
+		r2 = count_reliever[2]
+		r3 = count_reliever[3]
+		r4 = count_reliever[4]
+		r5 = count_reliever[5]
+		r6 = count_reliever[6]
+		r7 = count_reliever[7]
+
 		s1 = count_symptom[1]
 		s2 = count_symptom[2]
 		s3 = count_symptom[3]
@@ -374,7 +403,7 @@ def char(request, user):
 		print count_medicine
 		print start_week
 		print end_week
-		return render_to_response('message/chart.html', {'user': u, 'type':t, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
+		return render_to_response('message/chart.html', {'user': u, 'type':t, 'r1':r1, 'r2':r2,'r3':r3,'r4':r4,'r5':r5,'r6':r6,'r7':r7, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
 		#return render_to_response('message/chart.html', {'json_list': json_list})
 	#return render_to_response('message/chart.html', {'data1': data1, 'data2': data2, 'data3': data3})
 	else:
@@ -440,20 +469,23 @@ def send_email1(request, user):
 	c_start_week = user_date - datetime.timedelta(user_date.weekday())
 	l_start_week = user_date - datetime.timedelta(user_date.weekday())
 	l_end_week = l_start_week + datetime.timedelta(7)
+	count_reliever = [0 for i in range(8)]
 	count_medicine = [0 for i in range(8)]
 	count_symptom = [0 for i in range(8)]
 	for x in range(1,8):
 		c_end_week = c_start_week + datetime.timedelta(x)
 
-		data4 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'm1').count()
-		data5 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'm2').count()
-		data6 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'm3').count()
+		data4 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Controller1').count()
+		data5 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Controller2').count()
+		data6 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Reliever').count()
 		
-		count_medicine[x] = data4 + data5 + data6
 		
-		sym1 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 's1').count()
-		sym2 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 's2').count()
-		sym3 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 's3').count()
+		count_medicine[x] = data4 + data5 
+		count_reliever[x] = data6
+		
+		sym1 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Symptom1').count()
+		sym2 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Symptom2').count()
+		sym3 = LogTable.objects.filter(username=u.username, timestamp__range=[c_start_week, c_end_week], med_id = 'Symptom3').count()
 		count_symptom[x] = sym1 + sym2 + sym3
 
 	m1 = count_medicine[1]
@@ -463,6 +495,14 @@ def send_email1(request, user):
 	m5 = count_medicine[5]
 	m6 = count_medicine[6]
 	m7 = count_medicine[7]
+		
+	r1 = count_reliever[1]
+	r2 = count_reliever[2]
+	r3 = count_reliever[3]
+	r4 = count_reliever[4]
+	r5 = count_reliever[5]
+	r6 = count_reliever[6]
+	r7 = count_reliever[7]
 	
 	s1 = count_symptom[1]
 	s2 = count_symptom[2]
@@ -478,7 +518,7 @@ def send_email1(request, user):
 	end_week = start_week + datetime.timedelta(6)
 	l_note = notes_table.objects.filter(uid=u.id, start_week__range=[l_start_week, l_end_week]).order_by('start_week')
 	
-	d=Context({'log_list': l_list, 'note_list': l_note, 'start_week': start_week, 'end_week': end_week, 'user': u, 'type': t, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
+	d=Context({'log_list': l_list, 'note_list': l_note, 'start_week': start_week, 'end_week': end_week, 'user': u, 'type': t, 'r1':r1, 'r2':r2,'r3':r3,'r4':r4,'r5':r5,'r6':r6,'r7':r7, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
 	htmly = get_template('message/report.html')
 	subject, from_email, to = 'test1', from_email, to_mail
 	text_content = 'This is an important message.'
@@ -487,7 +527,8 @@ def send_email1(request, user):
 	msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
 	msg.attach_alternative(html_content, "text/html")
 	msg.send()
-	return render_to_response("message/report_disp.html", {'log_list': l_list, 'note_list': l_note, 'start_week': start_week, 'end_week': end_week, 'user': u, 'type': t, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
+	return render_to_response("message/report_disp.html", {'log_list': l_list, 'note_list': l_note, 'start_week': start_week, 'end_week': end_week, 'user': u, 'type': t,'r1':r1, 'r2':r2,'r3':r3,'r4':r4,'r5':r5,'r6':r6,'r7':r7, 'm1' : m1,'m2' : m2,'m3' : m3,'m4' : m4,'m5' : m5,'m6' : m6,'m7' : m7,'s1': s1,'s2': s2,'s3': s3,'s4': s4,'s5': s5,'s6': s6,'s7': s7})
+
 
 @csrf_exempt	
 def process_msg(request, user):

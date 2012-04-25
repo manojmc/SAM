@@ -21,11 +21,11 @@ from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.template.loader import get_template
 from django.template import Context
-csv_filepathname="/home/manoj/test"
-your_djangoproject_home="/home/manoj/1/sam/"
+#csv_filepathname="/home/manoj/test"
+#your_djangoproject_home="/home/manoj/1/sam/"
 
 import sys,os
-sys.path.append(your_djangoproject_home)
+#sys.path.append(your_djangoproject_home)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from message.models import LogTable
 import csv

@@ -161,8 +161,9 @@ First name  Last Name
 {{ user.first_name }}   {{ user.last_name }}
 </pre>
 <form action="/sam/{{ user.username }}/datelogs/" method="post">
-  <input type="text" id="cal1" name="from_date">
-  <input type="text" id="cal2" name="to_date">
+Pick a range: 
+  <input type="text" id="cal1" name="from_date" readonly="readonly">
+  <input type="text" id="cal2" name="to_date" readonly= "readonly">
   <input class="btn btn-inverse" type="submit" value="Fetch" /><br />
   </form>
 {% else %}
@@ -180,7 +181,8 @@ Patient Name
 {%endif%}
 
 <form action="/sam/{{ user.username }}/char/" method = "post">
-<input type="text" id="cal5" name="f_date" />
+Pick a week:
+<input type="text" id="cal5" name="f_date" readonly="readonly" />
 <input class = "btn btn-inverse" type="submit" value="Summary" /><br />
 </form>
 {% if success_msg %}
