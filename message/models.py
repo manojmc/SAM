@@ -2,9 +2,35 @@ from django.db import models
 from django.contrib.auth.models import User
 from django import forms
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file  = forms.FileField()
+class log_form(forms.Form):
+    from_date = forms.DateTimeField()
+    to_date = forms.DateTimeField()
+
+class char_form(forms.Form):
+	f_date = forms.DateTimeField()
+
+class NewUser(forms.Form):
+	pat_username = forms.CharField(max_length=50)
+	pat_first_name = forms.CharField(max_length=50)
+	pat_last_name = forms.CharField(max_length=50)
+	pat_email = forms.EmailField(max_length=75)
+	pat_password = forms.CharField(min_length=5, max_length=30, widget=forms.PasswordInput(render_value=False))
+	pat_confirm_password = forms.CharField(max_length=30, widget=forms.PasswordInput(render_value=False))
+
+	def clean_confirm_password(self):
+		confirm_password = self.cleaned_data['pat_confirm_password']
+		original_password = self.cleaned_data.get('pat_password', '')
+		
+		if original_password != confirm_password:
+			flag = "set"
+			return flag
+		else:
+			return confirm_password
+
+class login_form(forms.Form):
+	username = forms.CharField(max_length=50)
+	password = forms.CharField(max_length=50)
+
 
 class user_table(models.Model):
 	username=models.CharField(max_length=10)

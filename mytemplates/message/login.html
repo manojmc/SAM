@@ -89,15 +89,22 @@
       {%endif%}
       {% if error_message %}
       <div class="modal" id="myModal">
-		  <div class="modal-header" bgcolor="blue">
-		    <a class="close" data-dismiss="modal">×</a>
-		    <h3>Sign In</h3>
-		  </div>
+      <div class="modal-header" bgcolor="blue">
+        <h3>Sign In</h3>
+      </div>
+      {% else %}
+      <div class="modal fade" id="myModal">
+      <div class="modal-header" bgcolor="blue">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Sign In</h3>
+      </div>
+      {% endif %}  
+		  
 		  <div class="modal-body" >
 		  <form action="/sam/login/" method="post">
 		    UserName: <input type="text" name="username"/><br />
 			Password: <input type="password" name="password"/><br />
-			<strong color="red">{{ error_message }}</strong>
+			{% if error_message %}<strong color="red">{{ error_message }}</strong>{% endif %}
 		  </div>
 		  <div class="modal-footer">
 		   <!-- <div class="btn btn-primary" type="submit" name="submit"> Login-->
@@ -105,33 +112,20 @@
 		    </div>
 		  </div>
 		</div>
-		{% else %}
-		
-    <div class="modal fade" id="myModal">
-		  <div class="modal-header">
-		    <a class="close" data-dismiss="modal">×</a>
-		    <h3>Sign In</h3>
-		  </div>
-		  
-      <div class="modal-body" >
-		  <form action="/sam/login/" method="post">
-		    UserName: <input type="text" name="username"/><br />
-			Password: <input type="password" name="password"/>
-			
-		  </div>
-		  <div class="modal-footer">
-		   <!-- <div class="btn btn-primary" type="submit" name="submit"> Login-->
-		   <input class = "btn btn-primary" name="submit" type="submit" value="Login" />
-		    </div>
-		  </div>
-		</div>
-		{% endif %}
     </form>
+    {% if reg_usuc %}
+    <div class="modal" id="newModal">
+    <div class="modal-header">
+        <h3>Register</h3>
+      </div>
+    {%else%}
     <div class="modal fade" id="newModal">
-      <div class="modal-header">
+    <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
         <h3>Register</h3>
       </div>
+    {%endif%}
+      
       <div class="modal-body" >
         <form padding-top="50px" class ="form-horizontal" name="sign_up" action="/sam/signup/" method="post">
           <fieldset>
@@ -162,17 +156,17 @@
             <div class="control-group">
               <label class="control-label" for="password">Password</label>
               <div class="controls">
-                <input align="right" type="text" name="pat_password" placeholder="Password" id="password"/>
+                <input align="right" type="password" name="pat_password" placeholder="Password" id="password"/>
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="confirm_password">Confirm Password</label>
               <div class ="controls">
-                <input type="text" name="confirm_password" placeholder="Confirm Password" id="confirm_password" />
+                <input type="password" name="pat_confirm_password" placeholder="Confirm Password" id="confirm_password" />
               </div>
             </div>
           </fieldset>
-        
+          {%if reg_usuc%}<p><strong>{{reg_usuc}}</strong></p>{%endif%} 
         </div>
         <div class="modal-footer">
           <input class="btn btn-primary" name="submit" type="submit" value="Register" onclick="check()" />

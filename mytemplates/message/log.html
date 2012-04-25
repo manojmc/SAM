@@ -155,7 +155,6 @@
 
 <h1>DETAILS</h1>
 
-{% if type.type = 1 %}
 <pre>
 First name  Last Name
 {{ user.first_name }}   {{ user.last_name }}
@@ -166,24 +165,14 @@ Pick a range:
   <input type="text" id="cal2" name="to_date" readonly= "readonly">
   <input class="btn btn-inverse" type="submit" value="Fetch" /><br />
   </form>
-{% else %}
-<pre>
-Patient Name
-{{patient.first_name}} {{patient.last_name}}
-</pre>
-
-<form action="/sam/{{ user.username }}/datelogs/" method="post">
-  <input type="text" id="cal1" name="from_date">
-  <input type="text" id="cal2" name="to_date">
-  <input class="btn btn-inverse" type="submit" value="Fetch" /><br />
-</form>
-
-{%endif%}
-
+{% if error_message %}
+<p><strong>{{error_message}}</strong></p>
+{% endif %}
 <form action="/sam/{{ user.username }}/char/" method = "post">
 Pick a week:
 <input type="text" id="cal5" name="f_date" readonly="readonly" />
 <input class = "btn btn-inverse" type="submit" value="Summary" /><br />
+
 </form>
 {% if success_msg %}
 <p><strong>{{success_msg}}</strong></p>

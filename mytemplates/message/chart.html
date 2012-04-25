@@ -177,6 +177,9 @@
    Pick a Week:<input type = "text" id="cal1" name = "f_date" readonly="readonly" /> 
    
     <input class = "btn btn-inverse" type="submit" value="Summary" /><br />
+{% if cherr_message %}
+<p><strong>{{ cherr_message }}</strong></p>
+{% endif %}
     </form>
       
     <div id="chart_div" style="width: 900px; height: 500px;"></div>

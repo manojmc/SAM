@@ -76,15 +76,22 @@
         </div>
       </div>
     </div>
+    {%if file_error %}
+    <div class="modal" id="myModal">
+      <div class="modal-header" bgcolor="blue">
+        <h3>Choose a File</h3>
+      </div>
+      {%else%}
 	<div class="modal fade" id="myModal">
 		  <div class="modal-header" bgcolor="blue">
 		    <a class="close" data-dismiss="modal">×</a>
 		    <h3>Choose a File</h3>
 		  </div>
+      {%endif%}
 		  <div class="modal-body" >
 		  <form enctype="multipart/form-data" action="/sam/{{ user }}/upload/" method="post">
-		    File: <input type="file" name="path"/><br />
-					
+		    File: <input type="file" name="file"/><br />
+					{%if file_error%}<p><strong>{{file_error}}</strong></p>{% endif %}
 		  </div>
 		  <div class="modal-footer">
 		   <!-- <div class="btn btn-primary" type="submit" name="submit"> Login-->
@@ -99,18 +106,13 @@
             <ul class="nav nav-list">
               <li class="nav-header">Sidebar</li>
              
-              {% if type.type == 1 %}
+            
                <li class="active"><a href="/sam/{{ user }}/patient/">Home</a></li>
               <li><a href="/sam/{{ user }}/logs/">View Logs</a></li>
               <li><a data-toggle="modal" href="#myModal">upload data</a></li>
               <li><a href="/sam/{{ user }}/report/">Generate Report</a></li>
               <li><a href="/sam/{{ user }}/notes/">notes</a></li>
-              {% else %}
-               <li class="active"><a href="/sam/{{ user }}/parent/">Home</a></li>
-              <li><a href="/sam/{{ user }}/logs/">View Logs</a></li>
-              <li><a href="/sam/{{ user }}/notes/">notes</a></li>
-              <!--<li><a href="#">Link</a></li>-->
-              {%endif%}
+             
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
@@ -123,8 +125,7 @@
           <div class="row-fluid">
             <div class="span12">
               <h1>Welcome {{ user.first_name }}</h1>
-              
-{% if type.type == 1 %} 
+               
               <pre>
 <table cellpadding="10">
 <tr>
@@ -144,14 +145,7 @@
 {%if success_msg%}
 <h4>{{success_msg}}</h4>
 {%endif%}
-{% else %}
-<pre>
-     
-<h4>User Name      Patient Name              Last Login</h4>
-{{ user.first_name }} {{ user.last_name }}      {{ patient.first_name }} {{ patient.last_name}}             {{ user.last_login }}
-        
-        </pre>
-        	{% endif%}
+
             </div><!--/span-->
            </div><!--/row-->
           <div class="row-fluid">
