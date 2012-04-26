@@ -33,10 +33,10 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-EMAIL_HOST = 'hostname'
+EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'username'
 EMAIL_HOST_PASSWORD = 'PASSWORD'
-EMAIL_PORT = PORT
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 SITE_ID = 1
