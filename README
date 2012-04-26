@@ -1,0 +1,21 @@
+This is a Web Application for Asthmatic patients to manage their medication patterns which aid in better treatment.
+
+Framework - Django (python)
+Storage - Mysql 
+
+Set your path in settings.py 
+*STATIC_ROOT = path + '/static/'
+*TEMPLATE_DIRS = ( path+'/mytemplates/')
+
+Fill up the SendGrid API credentials in settings.py 
+
+EMAIL_HOST_USER = 'username'
+EMAIL_HOST_PASSWORD = 'password'
+
+
+After setting up the environment and seeing up the path 
+
+1) inside SAM folder run - python manage.py syncdb
+2) To start the server - python manage.py run server
+
+The app will now be available at in http://localhost:3000/ 
